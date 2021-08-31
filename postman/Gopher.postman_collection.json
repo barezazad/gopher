@@ -1,0 +1,1378 @@
+{
+	"info": {
+		"_postman_id": "05551e21-0581-406b-b095-c8baaac2b0c0",
+		"name": "Gopher",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Barez\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    var token = jsonData[\"data\"][\"token\"]",
+									"    pm.environment.set(\"token\", token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Accept-Language",
+								"value": "ku",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"username\": \"admin\",\n\t\"password\": \"admin12345\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/login",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LogOut",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{endpointgopher}}/logout",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Request Reset password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\":\"barez.azad@iqonline.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/requestResetpassword",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"requestResetpassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset password",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwiaWQiOjEsImV4cCI6MTYyNjQ0ODY0OH0.M9XsdoJL_UbSrrDKb2oTyttk2T0SqcpnYe_-rtWb6lQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"new_password\":\"admin123\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/resetpassword",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"resetpassword"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Profile",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							}
+						],
+						"url": {
+							"raw": "{{endpointgopher}}/profile",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Profile",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"barez azad\",\n    \"lang\":\"en\",\n    \"email\":\"barez.azad@iqonline.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/updateProfile",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"updateProfile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Lang",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"lang\":\"en\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/updateLang",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"updateLang"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Find By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/users/4",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"users",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/all/users",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"all",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/users",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "users.name[eq]'barez'[and]users.id[eq]1[or]users.username[like]'barez'",
+									"disabled": true
+								},
+								{
+									"key": "order_by",
+									"value": "id",
+									"disabled": true
+								},
+								{
+									"key": "direction",
+									"value": "desc",
+									"disabled": true
+								},
+								{
+									"key": "page_size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Craete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"role_id\":1,\n    \"name\":\"barez azad\",\n    \"username\":\"barez.azad\",\n    \"password\":\"213456789\",\n    \"lang\":\"en\",\n    \"email\":\"barez.azad@iqonline.com\",\n    \"status\":\"active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/users",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"role_id\":1,\n    \"name\":\"barez azad\",\n    \"username\":\"barez.azad\",\n    \"password\":\"213456789\",\n    \"lang\":\"en\",\n    \"email\":\"barez.azad@iqonline.com\",\n    \"status\":\"active\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/users/2",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"users",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{endpointgopher}}/users/14",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"users",
+								"14"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Roles // Normal API",
+			"item": [
+				{
+					"name": "Find By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/roles/1",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"roles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/all/roles",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"all",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Resources",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/resources",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"resources"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/roles",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"roles"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "users.name[eq]'barez'[and]users.id[eq]1[or]users.username[like]'barez'",
+									"disabled": true
+								},
+								{
+									"key": "order_by",
+									"value": "id",
+									"disabled": true
+								},
+								{
+									"key": "direction",
+									"value": "desc",
+									"disabled": true
+								},
+								{
+									"key": "page_size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Craete",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"supper admin\",\n    \"resources\":\"user:write,user:read\",\n    \"description\":\"description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/roles",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\":\"supper admin\",\n    \"resources\":\"user:write,user:read\",\n    \"description\":\"description\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/roles/1",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"roles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{endpointgopher}}/roles/1",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"roles",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Cities // Form-Data& Doc",
+			"item": [
+				{
+					"name": "Find By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/cities/2",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"cities",
+								"2"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "All",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/all/cities",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"all",
+								"cities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/cities",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"cities"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "users.name[eq]'barez'[and]users.id[eq]1[or]users.username[like]'barez'",
+									"disabled": true
+								},
+								{
+									"key": "order_by",
+									"value": "id",
+									"disabled": true
+								},
+								{
+									"key": "direction",
+									"value": "desc",
+									"disabled": true
+								},
+								{
+									"key": "page_size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Craete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "sulemani1",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "suli ",
+									"type": "text"
+								},
+								{
+									"key": "attachments",
+									"type": "file",
+									"src": "/home/barez/Documents/image001.png"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/cities",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"cities"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "name",
+									"value": "sulemani",
+									"type": "text"
+								},
+								{
+									"key": "description",
+									"value": "suli ",
+									"type": "text"
+								},
+								{
+									"key": "attachments",
+									"type": "file",
+									"src": "/home/barez/Documents/image001.png"
+								}
+							],
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/cities/3",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"cities",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{endpointgopher}}/cities/3",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"cities",
+								"3"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Gifts // Cipher-Data& Doc base64",
+			"item": [
+				{
+					"name": "Find By ID",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/gifts/5",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"gifts",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "List",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/gifts",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"gifts"
+							],
+							"query": [
+								{
+									"key": "filter",
+									"value": "users.name[eq]'barez'[and]users.id[eq]1[or]users.username[like]'barez'",
+									"disabled": true
+								},
+								{
+									"key": "order_by",
+									"value": "id",
+									"disabled": true
+								},
+								{
+									"key": "direction",
+									"value": "desc",
+									"disabled": true
+								},
+								{
+									"key": "page_size",
+									"value": "10",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Craete",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// {",
+									"//     \"name\": \"gift\",",
+									"//     \"attachments\": [",
+									"//         \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAG0AoADASIAAhEBAxEB/8QAHAABAAEFAQEAAAAAAAAAAAAAAAcBAgQFBgMI\"",
+									"//     ]",
+									"// }"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\":\"YrUnXQo+g82KNoyiJZEXnYRsgnjlf3a69vk2q0rCd4fX9Ikd7efcGuCD/M5tJZgBWISoiKxDh3d0BMxqJrX7+9YdTw2i0Gxe+5FkhmwAtaezVmVevxkyf6mNXDlcO3A+YL1K8jWt3hnguBdD0Ssnp2vlYnBUXmDTPaWoGX0Swnhgp4Ejduums/hq9rApb8fIVgryq78UOHnu5ufl0cU+Bb9OLj0FJvWj+DpLMbC6XCvZy9Ljt37TyE+sBc8kIulY2VqL2iZm6Z4OvK4RwX+uQ4fNJ3q9fWy6ONMtbY/fHv9uQ+jb19fguT5HkgHnEQydTXnezG2QxyG2o6e81nr4Vu4wxbe8wcfhVq/W4Zlmpy8Plksf85+LFLPyZ23QPDSnl+6ath/kQxwlarjaVzZUda58Ng4DyURrVn0ePDqiodper5AHmeKXD89b+etzawG7e6gVFgQ+22lsl0a0BVx61dX4suYbDQGlmb1dvO61lmAnRrpcbzS5x4eejL2Ji+b0AsisWO+8h5eu6di6XtQ2yvhtVzE3jeY6beqV+4C8ff7zKRsJr1rDgPbPaYuDt1V49GbiNwq2CQXjuI4wS6dlDkx0KdAIb27KJFglu2YoBwqbg1EnH2msmpSiNKdfqSK7vpECzT6iLk8r66SNmOXynL6uRhSmsywpL4DuyzeCbr57OVm2pnZu2dlhd7Zs8CE9RjdzqcWXHlXMFGszk9VXKYBRTkOFA+C3xZV50cGlAwDcjKIHS/oge5ZuAcagSdnlZVYMNlQUIMx1F6qak0Cv2a11QTvfrJGjdnXSf2d0ouVHsBHRC66DhBekigruVU/4cPch6YS3tTML/06ObqMJtUqHf3N/qwQrREZAsEZk3YKKAZBO1GqhquK5SX3W7i6thNuicCr4gWdLBl7qu8HRx528XvZCBprT6+tp8o/r4U262Ng+W6t6eq3H/YoXS7oBMCSGjsrfB2ZK2FALzOw0NOXxN0ZQXCja21/X3dSD9HpPZmb/wi4wyMIcEmjSVHIovtIJU+AwE2JSFgSN+xdfKEtJrsJzzA3sLGCEd6JX9ysW9zColU86gnn4indo4Q33a6u4PJ+c7G9aD0nfmwvXxx+FVuY87im6c7GHdJA08m8JBxkfXKUua8McDTP0PFq6FR2/jajwzr5hnoGntjRioZQ/+A/l54GgyIMq6E67+8Y+XtgtXktVQ/prUQb7+AwIdAo3QYS7OPHBd/FsR1aA3zkTZY04/HHzRJAQF5ZPXXbxBtXcaGKzrXYzi+9KTpRr/z/camdB4zY4s4YkJDKGOzvudKdBQOQBo1t4tYFEqJbh6uLIuG966DSn1HUtYFHge+mX0AzkCb3mHy2gkMVZNg==\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/gifts",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"gifts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// {",
+									"//     \"name\": \"gift\",",
+									"//     \"attachments\": [",
+									"//         \"data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAG0AoADASIAAhEBAxEB/8QAHAABAAEFAQEAAAAAAAAAAAAAAAcBAgQFBgMI\"",
+									"//     ]",
+									"// }"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"data\":\"YrUnXQo+g82KNoyiJZEXnYRsgnjlf3a69vk2q0rCd4fX9Ikd7efcGuCD/M5tJZgBWISoiKxDh3d0BMxqJrX7+9YdTw2i0Gxe+5FkhmwAtaezVmVevxkyf6mNXDlcO3A+YL1K8jWt3hnguBdD0Ssnp2vlYnBUXmDTPaWoGX0Swnhgp4Ejduums/hq9rApb8fIVgryq78UOHnu5ufl0cU+Bb9OLj0FJvWj+DpLMbC6XCvZy9Ljt37TyE+sBc8kIulY2VqL2iZm6Z4OvK4RwX+uQ4fNJ3q9fWy6ONMtbY/fHv9uQ+jb19fguT5HkgHnEQydTXnezG2QxyG2o6e81nr4Vu4wxbe8wcfhVq/W4Zlmpy8Plksf85+LFLPyZ23QPDSnl+6ath/kQxwlarjaVzZUda58Ng4DyURrVn0ePDqiodper5AHmeKXD89b+etzawG7e6gVFgQ+22lsl0a0BVx61dX4suYbDQGlmb1dvO61lmAnRrpcbzS5x4eejL2Ji+b0AsisWO+8h5eu6di6XtQ2yvhtVzE3jeY6beqV+4C8ff7zKRsJr1rDgPbPaYuDt1V49GbiNwq2CQXjuI4wS6dlDkx0KdAIb27KJFglu2YoBwqbg1EnH2msmpSiNKdfqSK7vpECzT6iLk8r66SNmOXynL6uRhSmsywpL4DuyzeCbr57OVm2pnZu2dlhd7Zs8CE9RjdzqcWXHlXMFGszk9VXKYBRTkOFA+C3xZV50cGlAwDcjKIHS/oge5ZuAcagSdnlZVYMNlQUIMx1F6qak0Cv2a11QTvfrJGjdnXSf2d0ouVHsBHRC66DhBekigruVU/4cPch6YS3tTML/06ObqMJtUqHf3N/qwQrREZAsEZk3YKKAZBO1GqhquK5SX3W7i6thNuicCr4gWdLBl7qu8HRx528XvZCBprT6+tp8o/r4U262Ng+W6t6eq3H/YoXS7oBMCSGjsrfB2ZK2FALzOw0NOXxN0ZQXCja21/X3dSD9HpPZmb/wi4wyMIcEmjSVHIovtIJU+AwE2JSFgSN+xdfKEtJrsJzzA3sLGCEd6JX9ysW9zColU86gnn4indo4Q33a6u4PJ+c7G9aD0nfmwvXxx+FVuY87im6c7GHdJA08m8JBxkfXKUua8McDTP0PFq6FR2/jajwzr5hnoGntjRioZQ/+A/l54GgyIMq6E67+8Y+XtgtXktVQ/prUQb7+AwIdAo3QYS7OPHBd/FsR1aA3zkTZY04/HHzRJAQF5ZPXXbxBtXcaGKzrXYzi+9KTpRr/z/camdB4zY4s4YkJDKGOzvudKdBQOQBo1t4tYFEqJbh6uLIuG966DSn1HUtYFHge+mX0AzkCb3mHy2gkMVZNg==\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/gifts/5",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"gifts",
+								"5"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{endpointgopher}}/gifts/5",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"gifts",
+								"5"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Documents",
+			"item": [
+				{
+					"name": "Download",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"type": "text",
+								"value": "en"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{endpointgopher}}/documents/download/cities/2-0-AypVUjwM3r.png",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"documents",
+								"download",
+								"cities",
+								"2-0-AypVUjwM3r.png"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "bearer {{token}}"
+							},
+							{
+								"key": "Accept-Language",
+								"value": "en",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{endpointgopher}}/documents/delete/cities/1",
+							"host": [
+								"{{endpointgopher}}"
+							],
+							"path": [
+								"documents",
+								"delete",
+								"cities",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

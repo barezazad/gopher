@@ -1,0 +1,397 @@
+{
+    "created": {
+        "en": "created",
+        "ar": "created",
+        "ku": "created"
+    },
+    "updated": {
+        "en": "updated",
+        "ar": "updated",
+        "ku": "updated"
+    },
+    "deleted": {
+        "en": "deleted",
+        "ar": "deleted",
+        "ku": "deleted"
+    },
+    "saved": {
+        "en": "saved",
+        "ar": "saved",
+        "ku": "saved"
+    },
+    "list": {
+        "en": "list",
+        "ar": "list",
+        "ku": "list"
+    },
+    "info": {
+        "en": "info",
+        "ar": "info",
+        "ku": "info"
+    },
+    "language": {
+        "en": "language",
+        "ar": "language",
+        "ku": "language"
+    },
+    "profile": {
+        "en": "profile",
+        "ar": "profile",
+        "ku": "profile"
+    },
+    "auth": {
+        "en": "auth",
+        "ar": "auth",
+        "ku": "auth"
+    },
+    "reset-password": {
+        "en": "reset-password",
+        "ar": "reset-password",
+        "ku": "reset-password"
+    },
+    "role": {
+        "en": "role",
+        "ar": "role",
+        "ku": "role"
+    },
+    "roles": {
+        "en": "roles",
+        "ar": "roles",
+        "ku": "roles"
+    },
+    "user": {
+        "en": "user",
+        "ar": "user",
+        "ku": "user"
+    },
+    "users": {
+        "en": "users",
+        "ar": "users",
+        "ku": "users"
+    },
+    "setting": {
+        "en": "setting",
+        "ar": "setting",
+        "ku": "setting"
+    },
+    "settings": {
+        "en": "settings",
+        "ar": "settings",
+        "ku": "settings"
+    },
+    "activity": {
+        "en": "activity",
+        "ar": "activity",
+        "ku": "activity"
+    },
+    "activities": {
+        "en": "activities",
+        "ar": "activities",
+        "ku": "activities"
+    },
+    "document": {
+        "en": "document",
+        "ar": "document",
+        "ku": "document"
+    },
+    "documents": {
+        "en": "documents",
+        "ar": "documents",
+        "ku": "documents"
+    },
+    "city": {
+        "en": "city",
+        "ar": "city",
+        "ku": "city"
+    },
+    "cities": {
+        "en": "cities",
+        "ar": "cities",
+        "ku": "cities"
+    },
+    "gift": {
+        "en": "gift",
+        "ar": "gift",
+        "ku": "gift"
+    },
+    "gifts": {
+        "en": "gifts",
+        "ar": "gifts",
+        "ku": "gifts"
+    },
+    "%v info": {
+        "en": "%v info",
+        "ar": "%v info",
+        "ku": "%v info"
+    },
+    "list of %v": {
+        "en": "list of %v",
+        "ar": "list of %v",
+        "ku": "list of %v"
+    },
+    "all %v": {
+        "en": "all %v",
+        "ar": "all %v",
+        "ku": "all %v"
+    },
+    "%v created successfully": {
+        "en": "%v created successfully",
+        "ar": "%v created successfully",
+        "ku": "%v created successfully"
+    },
+    "%v updated successfully": {
+        "en": "%v updated successfully",
+        "ar": "%v updated successfully",
+        "ku": "%v updated successfully"
+    },
+    "%v deleted successfully": {
+        "en": "%v deleted successfully",
+        "ar": "%v deleted successfully",
+        "ku": "%v deleted successfully"
+    },
+    "user logged in successfully": {
+        "en": "user logged in successfully",
+        "ar": "user logged in successfully",
+        "ku": "user logged in successfully"
+    },
+    "internal server error": {
+        "en": "internal server error",
+        "ar": "internal server error",
+        "ku": "internal server error"
+    },
+    "route not found": {
+        "en": "route not found",
+        "ar": "route not found",
+        "ku": "route not found"
+    },
+    "unauthorized": {
+        "en": "unauthorized",
+        "ar": "unauthorized",
+        "ku": "unauthorized"
+    },
+    "record not found": {
+        "en": "record not found",
+        "ar": "record not found",
+        "ku": "record not found"
+    },
+    "record not found in %v table": {
+        "en": "record not found in %v table",
+        "ar": "record not found in %v table",
+        "ku": "record not found in %v table"
+    },
+    "%v is not valid": {
+        "en": "%v is not valid",
+        "ar": "%v is not valid",
+        "ku": "%v is not valid"
+    },
+    "bind failed": {
+        "en": "bind failed",
+        "ar": "bind failed",
+        "ku": "bind failed"
+    },
+    "validation failed": {
+        "en": "validation failed",
+        "ar": "validation failed",
+        "ku": "validation failed"
+    },
+    "validation for %v failed in %v": {
+        "en": "validation for %v failed in %v",
+        "ar": "validation for %v failed in %v",
+        "ku": "validation for %v failed in %v"
+    },
+    "bad request": {
+        "en": "bad request",
+        "ar": "bad request",
+        "ku": "bad request"
+    },
+    "bad request for %v in %v": {
+        "en": "bad request for %v in %v",
+        "ar": "bad request for %v in %v",
+        "ku": "bad request for %v in %v"
+    },
+    "%v is required": {
+        "en": "%v is required",
+        "ar": "%v is required",
+        "ku": "%v is required"
+    },
+    "minimum accepted character for %v is %v": {
+        "en": "minimum accepted character for %v is %v",
+        "ar": "minimum accepted character for %v is %v",
+        "ku": "minimum accepted character for %v is %v"
+    },
+    "maximum accepted character for %v is %v": {
+        "en": "maximum accepted character for %v is %v",
+        "ar": "maximum accepted character for %v is %v",
+        "ku": "maximum accepted character for %v is %v"
+    },
+    "minimum accepted value for %v is %v": {
+        "en": "minimum accepted value for %v is %v",
+        "ar": "minimum accepted value for %v is %v",
+        "ku": "minimum accepted value for %v is %v"
+    },
+    "maximum accepted value for %v is %v": {
+        "en": "maximum accepted value for %v is %v",
+        "ar": "maximum accepted value for %v is %v",
+        "ku": "maximum accepted value for %v is %v"
+    },
+    "accepted values for %v are: %v": {
+        "en": "accepted values for %v are: %v",
+        "ar": "accepted values for %v are: %v",
+        "ku": "accepted values for %v are: %v"
+    },
+    "duplicate happened": {
+        "en": "duplicate happened",
+        "ar": "duplicate happened",
+        "ku": "duplicate happened"
+    },
+    "foreign key error": {
+        "en": "foreign key error",
+        "ar": "foreign key error",
+        "ku": "foreign key error"
+    },
+    "%v is already exist in table %v": {
+        "en": "%v is already exist in table %v",
+        "ar": "%v is already exist in table %v",
+        "ku": "%v is already exist in table %v"
+    },
+    "%v is unique in table %v": {
+        "en": "%v is unique in table %v",
+        "ar": "%v is unique in table %v",
+        "ku": "%v is unique in table %v"
+    },
+    "it has relation with some element, so it is not %v": {
+        "en": "it has relation with some element, so it is not %v",
+        "ar": "it has relation with some element, so it is not %v",
+        "ku": "it has relation with some element, so it is not %v"
+    },
+    "error in binding %v": {
+        "en": "error in binding %v",
+        "ar": "error in binding %v",
+        "ku": "error in binding %v"
+    },
+    "error in binding": {
+        "en": "error in binding",
+        "ar": "error in binding",
+        "ku": "error in binding"
+    },
+    "invalid %v ": {
+        "en": "invalid %v ",
+        "ar": "invalid %v ",
+        "ku": "invalid %v "
+    },
+    "invalid value didn't include %v ": {
+        "en": "invalid value didn't include %v ",
+        "ar": "invalid value didn't include %v ",
+        "ku": "invalid value didn't include %v "
+    },
+    "token is required": {
+        "en": "token is required",
+        "ar": "token is required",
+        "ku": "token is required"
+    },
+    "token is not valid": {
+        "en": "token is not valid",
+        "ar": "token is not valid",
+        "ku": "token is not valid"
+    },
+    "token is expired": {
+        "en": "token is expired",
+        "ar": "token is expired",
+        "ku": "token is expired"
+    },
+    "can't in generate token": {
+        "en": "can't in generate token",
+        "ar": "can't in generate token",
+        "ku": "can't in generate token"
+    },
+    "check this %v fields": {
+        "en": "check this %v fields",
+        "ar": "check this %v fields",
+        "ku": "check this %v fields"
+    },
+    "forbidden": {
+        "en": "forbidden",
+        "ar": "forbidden",
+        "ku": "forbidden"
+    },
+    "username or password is wrong": {
+        "en": "username or password is wrong",
+        "ar": "username or password is wrong",
+        "ku": "username or password is wrong"
+    },
+    "something went wrong": {
+        "en": "something went wrong",
+        "ar": "something went wrong",
+        "ku": "something went wrong"
+    },
+    "you don't have permission": {
+        "en": "you don't have permission",
+        "ar": "you don't have permission",
+        "ku": "you don't have permission"
+    },
+    "can't generate the excel list": {
+        "en": "can't generate the excel list",
+        "ar": "can't generate the excel list",
+        "ku": "can't generate the excel list"
+    },
+    "old password is wrong": {
+        "en": "old password is wrong",
+        "ar": "old password is wrong",
+        "ku": "old password is wrong"
+    },
+    "reset password successfully": {
+        "en": "reset password successfully",
+        "ar": "reset password successfully",
+        "ku": "reset password successfully"
+    },
+    "request to reset password successful": {
+        "en": "request to reset password successful",
+        "ar": "request to reset password successful",
+        "ku": "request to reset password successful"
+    },
+    "user data invalid try to send request again": {
+        "en": "user data invalid try to send request again",
+        "ar": "user data invalid try to send request again",
+        "ku": "user data invalid try to send request again"
+    },
+    "provided email is wrong": {
+        "en": "provided email is wrong",
+        "ar": "provided email is wrong",
+        "ku": "provided email is wrong"
+    },
+    "document type is wrong": {
+        "en": "document type is wrong",
+        "ar": "document type is wrong",
+        "ku": "document type is wrong"
+    },
+    "couldn't delete documents": {
+        "en": "couldn't delete documents",
+        "ar": "couldn't delete documents",
+        "ku": "couldn't delete documents"
+    },
+    "document type not accepted": {
+        "en": "document type not accepted",
+        "ar": "document type not accepted",
+        "ku": "document type not accepted"
+    },
+    "couldn't upload document": {
+        "en": "couldn't upload document",
+        "ar": "couldn't upload document",
+        "ku": "couldn't upload document"
+    },
+    "can't upload multiple document": {
+        "en": "can't upload multiple document",
+        "ar": "can't upload multiple document",
+        "ku": "can't upload multiple document"
+    },
+    "document didn't saved": {
+        "en": "document didn't saved",
+        "ar": "document didn't saved",
+        "ku": "document didn't saved"
+    },
+    "hashing password failed": {
+        "en": "hashing password failed",
+        "ar": "hashing password failed",
+        "ku": "hashing password failed"
+    }
+}
