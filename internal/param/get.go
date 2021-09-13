@@ -85,16 +85,19 @@ func generateLimit(c *gin.Context, engine *core.Engine, param *Param) {
 }
 
 func generateOffset(c *gin.Context, engine *core.Engine, param *Param) {
-	var page int
 	var err error
+	var page int
+	page = 1
 	if c.Query("page") != "" {
 		page, err = strconv.Atoi(c.Query("page"))
 		if err != nil {
 			// TODO: get path from gin.Context
 			engine.ServerLog.CheckError(err, "E1000165", "Offset is not a positive number")
-			page = 0
+		}
+		if page <= 0 {
+			page = 1
 		}
 	}
 
-	param.Offset = param.Limit * (page)
+	param.Offset = param.Limit * (page - 1)
 }

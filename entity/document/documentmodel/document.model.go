@@ -10,7 +10,7 @@ type Document struct {
 	Name     string `gorm:"not null" bind:"required" json:"name,omitempty"`
 	FileType string `bind:"required" json:"file_type,omitempty"`
 	DocId    uint   `gorm:"not null" json:"doc_id,omitempty"`
-	DocType  string `gorm:"type:enum('cities','gifts')" bind:"required,oneof=documenttypes" json:"doc_type,omitempty"`
+	DocType  string `bind:"required,oneof=documenttypes" json:"doc_type,omitempty"`
 }
 
 const (
