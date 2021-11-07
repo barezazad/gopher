@@ -15,9 +15,9 @@ type Final struct {
 	Path          string        `json:"path,omitempty"`
 	InvalidParams []Field       `json:"invalid_params,omitempty"`
 	Status        int           `json:"-"`
-	OriginalError string        `json:"-"`
-	Limb          error         `json:"limb,omitempty"`
-	// OriginalError string        `json:"original_error"`
+	// OriginalError string        `json:"-"`
+	Limb          error  `json:"limb,omitempty"`
+	OriginalError string `json:"original_error,omitempty"`
 }
 
 // Field is used as an array inside the FieldError

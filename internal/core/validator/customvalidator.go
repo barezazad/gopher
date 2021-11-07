@@ -25,15 +25,23 @@ func BindTagExtractor(engine *core.Engine, model interface{}, code, entity, acti
 		// get value
 		value := reflectValue.Field(i).Interface()
 
-		// to get tag table value in field
-		tableTag := field.Tag.Get("table")
+		// to get tag bind value in field
+		bindTag := field.Tag.Get("bind")
+
+		if bindTag == "-" || bindTag == "" {
+			continue
+		}
 
 		// if reflect is struct, and it will validate those fields in nested struct
-		if reflect.ValueOf(value).Kind() == reflect.Struct && tableTag != "-" {
+		if reflect.ValueOf(value).Kind() == reflect.Struct {
 
 			// reflect interface to get value and struct tags
 			reflexTypeN := reflect.TypeOf(value)
 			reflectValueN := reflect.ValueOf(value)
+
+			if reflexTypeN.String() == "time.Time" {
+				continue
+			}
 
 			for j := 0; j < reflexTypeN.NumField(); j++ {
 				// get field and value
@@ -58,112 +66,140 @@ func BindTagExtractor(engine *core.Engine, model interface{}, code, entity, acti
 // it compare value with bind tag conditions and it get proper error message
 func validationCase(err error, field reflect.StructField, value interface{}, action string) (errors error) {
 
+	if reflect.ValueOf(value).Kind() == reflect.Ptr {
+		value = reflectPointerToValue(value)
+	}
+
 	// get bind tag to binding field
 	bindTag := field.Tag.Get("bind")
 
-	if bindTag != "" {
+	requiredIfNotNil := ""
 
-		// get field name
-		jsonTag := field.Tag.Get("json")
-		regex := regexp.MustCompile(`\w+`)
-		fieldName := regex.FindString(jsonTag)
+	// get field name
+	jsonTag := field.Tag.Get("json")
+	regex := regexp.MustCompile(`\w+`)
+	fieldName := regex.FindString(jsonTag)
 
-		// split tags by comma and find all
-		tagByAction := BindTagByAction(bindTag, action)
+	// split tags by comma and find all
+	tagByAction := BindTagByAction(bindTag, action)
 
-		allTags := strings.Split(tagByAction, ",")
-		for _, v := range allTags {
+	allTags := strings.Split(tagByAction, ",")
+	for _, v := range allTags {
 
-			// split taq by equal to find key and value
-			splitTag := strings.Split(v, "=")
-			var tagKey string
-			var tagValue interface{}
+		// split taq by equal to find key and value
+		splitTag := strings.Split(v, "=")
+		var tagKey string
+		var tagValue interface{}
 
-			if len(splitTag) > 0 {
-				tagKey = splitTag[0]
+		if len(splitTag) > 0 {
+			tagKey = splitTag[0]
+		}
+		if len(splitTag) > 1 {
+			tagValue = splitTag[1]
+		}
+
+		// custom validation cases
+		switch tagKey {
+
+		case "required":
+			strValue := fmt.Sprintf("%v", value)
+			if strValue == "" || strValue == "0" {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.VisRequired, dictionary.Translate(fieldName))
 			}
-			if len(splitTag) > 1 {
-				tagValue = splitTag[1]
+
+		case "requiredifnotnil":
+			strValue := fmt.Sprintf("%v", value)
+			requiredIfNotNil = strValue
+			if strValue == "" || strValue == "0" {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.VisRequired, dictionary.Translate(fieldName))
 			}
 
-			// custom validation cases
-			switch tagKey {
+		case "min":
+			intTagValue, _ := helper.StrToInt(tagValue.(string))
+			if len(value.(string)) < intTagValue {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.MinimumAcceptedCharacterForVisV, dictionary.Translate(fieldName), tagValue)
+			}
 
-			case "required":
-				strValue := fmt.Sprintf("%v", value)
-				if strValue == "" || strValue == "0" {
-					err = logparser.AddInvalidParam(err, fieldName,
-						terms.VisRequired, dictionary.Translate(fieldName))
-				}
+		case "max":
+			intTagValue, _ := helper.StrToInt(tagValue.(string))
+			if len(value.(string)) > intTagValue {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.MaximumAcceptedCharacterForVisV, dictionary.Translate(fieldName), tagValue)
+			}
 
-			case "min":
-				intTagValue, _ := helper.StrToInt(tagValue.(string))
-				if len(value.(string)) < intTagValue {
-					err = logparser.AddInvalidParam(err, fieldName,
-						terms.MinimumAcceptedCharacterForVisV, dictionary.Translate(fieldName), tagValue)
-				}
+		case "lte":
+			floatTagValue, _ := helper.StrToFloat(tagValue.(string))
+			if value.(float64) < floatTagValue {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.MinimumAcceptedValueForVisV, dictionary.Translate(fieldName), tagValue)
+			}
 
-			case "max":
-				intTagValue, _ := helper.StrToInt(tagValue.(string))
-				if len(value.(string)) > intTagValue {
-					err = logparser.AddInvalidParam(err, fieldName,
-						terms.MaximumAcceptedCharacterForVisV, dictionary.Translate(fieldName), tagValue)
-				}
+		case "gte":
+			floatTagValue, _ := helper.StrToFloat(tagValue.(string))
+			if value.(float64) < floatTagValue {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.MaximumAcceptedValueForVisV, dictionary.Translate(fieldName), tagValue)
+			}
 
-			case "lte":
-				floatTagValue, _ := helper.StrToFloat(tagValue.(string))
-				if value.(float64) < floatTagValue {
-					err = logparser.AddInvalidParam(err, fieldName,
-						terms.MinimumAcceptedValueForVisV, dictionary.Translate(fieldName), tagValue)
-				}
+		case "oneof":
+			types := core.MustBeInTypes[tagValue.(string)]
+			if ok, _ := helper.Includes(types, value); !ok {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.AcceptedValueForVareV, dictionary.Translate(fieldName), types)
+			}
 
-			case "gte":
-				floatTagValue, _ := helper.StrToFloat(tagValue.(string))
-				if value.(float64) < floatTagValue {
-					err = logparser.AddInvalidParam(err, fieldName,
-						terms.MaximumAcceptedValueForVisV, dictionary.Translate(fieldName), tagValue)
-				}
+		case "contain":
+			if ok := strings.Contains(value.(string), tagValue.(string)); !ok {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.InvalidValueDoNotIncloudV, tagValue)
+			}
 
-			case "oneof":
-				types := core.MustBeInTypes[tagValue.(string)]
-				if ok, _ := helper.Includes(types, value); !ok {
-					err = logparser.AddInvalidParam(err, fieldName,
-						terms.AcceptedValueForVareV, dictionary.Translate(fieldName), types)
-				}
-
-			case "contain":
-				if ok := strings.Contains(value.(string), tagValue.(string)); !ok {
-					err = logparser.AddInvalidParam(err, fieldName,
-						terms.InvalidValueDoNotIncloudV, tagValue)
-				}
-
-			case "email":
-				re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
-				if !re.MatchString(value.(string)) {
-					err = logparser.AddInvalidParam(err, fieldName,
-						terms.VisNotValid, dictionary.Translate(fieldName))
-				}
+		case "email":
+			re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
+			if !re.MatchString(value.(string)) {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.VisNotValid, dictionary.Translate(fieldName))
 			}
 		}
+	}
+	if strings.Contains(tagByAction, "requiredifnotnil") && requiredIfNotNil == "" {
+		err = nil
 	}
 	return err
 }
 
-// this function separate validation per type of action
-func BindTagByAction(tagvalue, action string) (result string) {
+// BindTagByAction this function separate validation per type of action
+func BindTagByAction(tagvalue string, action string) (result string) {
 
-	// in save case
-	if !strings.Contains(tagvalue, fmt.Sprintf("%v:", core.Create)) ||
-		!strings.Contains(tagvalue, fmt.Sprintf("%v:", core.Update)) {
+	perAction := helper.RegexFindBetweenTwoPattern(fmt.Sprintf("%v:", action), `\|`, tagvalue)
+	if perAction != "" {
+		result = perAction
+	}
+
+	all := helper.RegexFindBetweenTwoPattern(`all:`, `\|`, tagvalue)
+	if all != "" {
+		result += "," + all
+	}
+
+	if result == "" && !strings.Contains(tagvalue, "|") && !strings.Contains(tagvalue, ":") {
 		result = tagvalue
 	}
 
-	switch action {
-	case core.Create:
-		result = helper.RegexFindBetweenTwoPattern(`create:`, `\|`, tagvalue)
-	case core.Update:
-		result = helper.RegexFindBetweenTwoPattern(`update:`, `\|`, tagvalue)
+	return
+}
+
+func reflectPointerToValue(v interface{}) interface{} {
+
+	rv := reflect.ValueOf(v)
+	for rv.Kind() == reflect.Ptr || rv.Kind() == reflect.Interface {
+		rv = rv.Elem()
 	}
 
-	return
+	if rv.IsValid() {
+		return rv.Interface()
+	}
+	return ""
 }
