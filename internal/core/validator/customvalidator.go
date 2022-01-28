@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"gopher/internal/core"
 	"gopher/internal/core/terms"
+	"gopher/pkg/decimal"
 	"gopher/pkg/dictionary"
 	"gopher/pkg/helper"
 	"gopher/pkg/logparser"
@@ -79,6 +80,12 @@ func validationCase(err error, field reflect.StructField, value interface{}, act
 	jsonTag := field.Tag.Get("json")
 	regex := regexp.MustCompile(`\w+`)
 	fieldName := regex.FindString(jsonTag)
+	// to remove _id in field name like city_id is required will be city is required
+	fieldName = strings.ReplaceAll(fieldName, "_id", "")
+
+	// translate filed
+	var fieldTranslate dictionary.Translate
+	fieldTranslate = dictionary.Translate(fieldName)
 
 	// split tags by comma and find all
 	tagByAction := BindTagByAction(bindTag, action)
@@ -105,7 +112,7 @@ func validationCase(err error, field reflect.StructField, value interface{}, act
 			strValue := fmt.Sprintf("%v", value)
 			if strValue == "" || strValue == "0" {
 				err = logparser.AddInvalidParam(err, fieldName,
-					terms.VisRequired, dictionary.Translate(fieldName))
+					terms.VisRequired, fieldTranslate)
 			}
 
 		case "requiredifnotnil":
@@ -113,42 +120,61 @@ func validationCase(err error, field reflect.StructField, value interface{}, act
 			requiredIfNotNil = strValue
 			if strValue == "" || strValue == "0" {
 				err = logparser.AddInvalidParam(err, fieldName,
-					terms.VisRequired, dictionary.Translate(fieldName))
+					terms.VisRequired, fieldTranslate)
 			}
 
 		case "min":
 			intTagValue, _ := helper.StrToInt(tagValue.(string))
 			if len(value.(string)) < intTagValue {
 				err = logparser.AddInvalidParam(err, fieldName,
-					terms.MinimumAcceptedCharacterForVisV, dictionary.Translate(fieldName), tagValue)
+					terms.MinimumAcceptedCharacterForVisV, fieldTranslate, tagValue)
 			}
 
 		case "max":
 			intTagValue, _ := helper.StrToInt(tagValue.(string))
 			if len(value.(string)) > intTagValue {
 				err = logparser.AddInvalidParam(err, fieldName,
-					terms.MaximumAcceptedCharacterForVisV, dictionary.Translate(fieldName), tagValue)
+					terms.MaximumAcceptedCharacterForVisV, fieldTranslate, tagValue)
 			}
 
 		case "lte":
-			floatTagValue, _ := helper.StrToFloat(tagValue.(string))
-			if value.(float64) < floatTagValue {
-				err = logparser.AddInvalidParam(err, fieldName,
-					terms.MinimumAcceptedValueForVisV, dictionary.Translate(fieldName), tagValue)
+			switch v := value.(type) {
+			case float64:
+				floatTagValue, _ := helper.StrToFloat(tagValue.(string))
+				if v > floatTagValue {
+					err = logparser.AddInvalidParam(err, fieldName,
+						terms.MinimumAcceptedValueForVisV, fieldTranslate, tagValue)
+				}
+
+			case decimal.Decimal:
+				decimalTagValue, _ := decimal.NewFromString(tagValue.(string))
+				if !v.LessThanOrEqual(decimalTagValue) {
+					err = logparser.AddInvalidParam(err, fieldName,
+						terms.MinimumAcceptedValueForVisV, fieldTranslate, tagValue)
+				}
 			}
 
 		case "gte":
-			floatTagValue, _ := helper.StrToFloat(tagValue.(string))
-			if value.(float64) < floatTagValue {
-				err = logparser.AddInvalidParam(err, fieldName,
-					terms.MaximumAcceptedValueForVisV, dictionary.Translate(fieldName), tagValue)
+			switch v := value.(type) {
+			case float64:
+				floatTagValue, _ := helper.StrToFloat(tagValue.(string))
+				if value.(float64) < floatTagValue {
+					err = logparser.AddInvalidParam(err, fieldName,
+						terms.MaximumAcceptedValueForVisV, fieldTranslate, tagValue)
+				}
+			case decimal.Decimal:
+				decimalTagValue, _ := decimal.NewFromString(tagValue.(string))
+				if !v.GreaterThanOrEqual(decimalTagValue) {
+					err = logparser.AddInvalidParam(err, fieldName,
+						terms.MaximumAcceptedValueForVisV, fieldTranslate, tagValue)
+				}
 			}
 
 		case "oneof":
 			types := core.MustBeInTypes[tagValue.(string)]
 			if ok, _ := helper.Includes(types, value); !ok {
 				err = logparser.AddInvalidParam(err, fieldName,
-					terms.AcceptedValueForVareV, dictionary.Translate(fieldName), types)
+					terms.AcceptedValueForVareV, fieldTranslate, types)
 			}
 
 		case "contain":
@@ -157,11 +183,33 @@ func validationCase(err error, field reflect.StructField, value interface{}, act
 					terms.InvalidValueDoNotIncloudV, tagValue)
 			}
 
+		case "password":
+			secure := true
+			regs := []string{".{8,}", "[a-z]", "[A-Z]", "[0-9]"}
+			for _, rg := range regs {
+				t, _ := regexp.MatchString(rg, value.(string))
+				if !t {
+					secure = false
+					break
+				}
+			}
+			if !secure {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.InvalidValueDoNotIncloudV, tagValue)
+			}
+
+		case "username":
+			re := regexp.MustCompile("^[a-zA-Z0-9\\._-]+$")
+			if !re.MatchString(value.(string)) {
+				err = logparser.AddInvalidParam(err, fieldName,
+					terms.VisNotValid, fieldTranslate)
+			}
+
 		case "email":
 			re := regexp.MustCompile("^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$")
 			if !re.MatchString(value.(string)) {
 				err = logparser.AddInvalidParam(err, fieldName,
-					terms.VisNotValid, dictionary.Translate(fieldName))
+					terms.VisNotValid, fieldTranslate)
 			}
 		}
 	}
