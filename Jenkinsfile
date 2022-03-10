@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('build image') {
       steps {
-        sh 'docker build . -t $IMAGE_NAME:$IMAGE_VERSION -f Dockerfile'
+        sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION . '
       }
     }
 
