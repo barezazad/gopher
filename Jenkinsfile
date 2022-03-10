@@ -4,10 +4,17 @@ pipeline {
   environment {
     GITHUB_TOKEN = credentials('github-credential')
     IMAGE_NAME = 'barezazad/gopher'
-    IMAGE_VERSION = '0.0.1'
+    IMAGE_VERSION = '0.0.7'
   }
 
   stages {
+
+    stage('cleanup') {
+      steps {
+        sh 'docker system prune -a --volumes --force'
+      }
+    }
+    
     stage('build image') {
       steps {
         sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION . '
