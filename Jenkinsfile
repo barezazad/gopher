@@ -16,7 +16,7 @@ pipeline {
 
     stage('login to GHCR') {
       steps {
-        sh 'echo ${{ secrets.TOKEN }} | docker login ghcr.io -u barezazad --password-stdin'
+        sh 'echo "${{ secrets.TOKEN }}" | docker login ghcr.io -u barezazad --password-stdin'
       }
     }
 
