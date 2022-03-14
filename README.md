@@ -1,4 +1,4 @@
-# Gopher
+# Gopher 
 
 [![GolangCI](https://golangci.com/badges/github.com/BarezAzad/gopher.svg)](https://golangci.com/r/github.com/BarezAzad/gopher)
 [![codebeat badge](https://codebeat.co/badges/f7ed90cf-4793-4b82-acd3-00fecf4e3817)](https://codebeat.co/projects/github-com-BarezAzad-gopher-master)
@@ -145,4 +145,3 @@ We have some special method for handing errors which they are optimizing code fo
 ```
 generateerrcode.GenerateNewErrCode()
 ```
-tesa
