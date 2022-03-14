@@ -145,4 +145,3 @@ We have some special method for handing errors which they are optimizing code fo
 ```
 generateerrcode.GenerateNewErrCode()
 ```
-test
