@@ -11,8 +11,8 @@ import (
 	"gopher/pkg/generr"
 	"gopher/pkg/helper"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/golang-jwt/jwt"
 )
 
 // AuthGuard is used for decode the token and get public and private information
