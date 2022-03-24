@@ -1,48 +1,45 @@
 pipeline {
-  agent any
+    agent any
 
-  environment {
-    GITHUB_TOKEN = credentials('github-credential')
-    IMAGE_NAME = 'barezazad/gopher'
-    IMAGE_VERSION = '0.0.7'
-  }
+    environment {
+    GITHUB_CREDENTIAL = credentials('github-credential')
+    PROJECT = 'https://github.com/barezazad/gopher.git'
+    CONTAINER_REGISTRY = 'barezazad'
+    IMAGE_NAME = 'gopher'
+    }
 
-  stages {
+    stages {
 
-    stage('cleanup') {
-      steps {
-        sh 'docker system prune -a --volumes --force'
+      stage('Login') {
+        steps {
+            sh 'echo $GITHUB_CREDENTIAL_PSW | docker login ghcr.io -u $GITHUB_CREDENTIAL_USR --password-stdin'
+        }
+      }
+
+      stage('Clone & Build') {
+        steps {
+            sh 'docker build $PROJECT -t  ghcr.io/$CONTAINER_REGISTRY/$IMAGE_NAME:latest '
+        }
+      }
+
+      stage('Push') {
+        steps {
+            sh 'docker push ghcr.io/$CONTAINER_REGISTRY/$IMAGE_NAME:latest'
+        }
+      }
+
+      stage('Remove the built image') {
+        steps {
+            sh 'docker image rm ghcr.io/$CONTAINER_REGISTRY/$IMAGE_NAME:latest'
+            sh 'docker image rm -f $(docker images -f dangling=true -q)'
+        }
+      }
+
+    }
+
+    post {
+      always {
+          sh 'docker logout'
       }
     }
-    
-    stage('build image') {
-      steps {
-        sh 'docker build -t $IMAGE_NAME:$IMAGE_VERSION . '
-      }
-    }
-
-    stage('login to GHCR') {
-      steps {
-        sh 'echo $GITHUB_TOKEN | docker login ghcr.io -u barezazad --password-stdin'
-      }
-    }
-
-    stage('tag image') {
-      steps {
-        sh 'docker tag $IMAGE_NAME:$IMAGE_VERSION ghcr.io/$IMAGE_NAME:$IMAGE_VERSION'
-      }
-    }
-
-    stage('push image') {
-      steps {
-        sh 'docker push ghcr.io/$IMAGE_NAME:$IMAGE_VERSION'
-      }
-    }
-  }
-
-  post {
-    always {
-      sh 'docker logout'
-    }
-  }
-}
+} 
