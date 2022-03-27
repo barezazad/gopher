@@ -28,7 +28,7 @@ pipeline {
         }
       }
 
-      stage('Remove the built image') {
+      stage('Remove  the built image') {
         steps {
             sh 'docker image rm ghcr.io/$CONTAINER_REGISTRY/$IMAGE_NAME:latest'
             sh 'docker image rm -f $(docker images -f dangling=true -q)'
