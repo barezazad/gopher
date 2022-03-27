@@ -6,7 +6,7 @@ pipeline {
     PROJECT = 'https://github.com/barezazad/gopher.git'
     CONTAINER_REGISTRY = 'barezazad'
     IMAGE_NAME = 'gopher'
-    }  
+    }   
 
     stages {
 
